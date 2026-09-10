@@ -90,26 +90,25 @@ export default async function HomePage({
 
   return (
     <>
-      <section className="container-page hero-stage flex min-h-[calc(100vh-4.25rem)] flex-col justify-center">
-        <p className="eyebrow">{t("kicker")}</p>
-        <h1 className="display mt-4 text-[clamp(2.8rem,9vw,6.2rem)] font-extrabold text-fg">
+      <section className="container-page hero-stage flex min-h-[calc(100svh-4.25rem)] flex-col justify-center pb-8">
+        <p className="eyebrow mx-auto md:mx-0">{t("kicker")}</p>
+        <h1 className="display mx-auto mt-4 max-w-5xl text-center text-[clamp(2.4rem,9vw,5.8rem)] font-extrabold text-fg md:mx-0 md:text-start">
           <span className="text-accent">{(profile?.brandName || "Dev Nour").split(" ")[0]}</span>
           {(profile?.brandName || "Dev Nour").includes(" ")
             ? ` ${(profile?.brandName || "Dev Nour").split(" ").slice(1).join(" ")}`
             : ""}
         </h1>
 
-        <div className="hero-intro mt-10">
+        <div className="hero-intro mt-8 sm:mt-10">
           <ProfilePhoto
             src={profile?.avatarUrl}
             name={name}
             alt={s("photoAlt")}
             size="lg"
-            className="mx-auto sm:mx-0"
           />
-          <div>
+          <div className="hero-copy">
             <p className="text-2xl font-semibold sm:text-4xl">{name}</p>
-            <p className="mt-2 text-lg font-medium text-ink sm:text-xl">{title}</p>
+            <p className="mt-2 text-base font-medium text-ink sm:text-xl">{title}</p>
             <div className="hero-stats mt-5" aria-label={t("statsLabel")}>
               {age ? (
                 <div className="hero-stat">
@@ -126,7 +125,7 @@ export default async function HomePage({
                 <span>{t("skillsCount")}</span>
               </div>
               <div className="hero-stat">
-                <strong>{projects.length}+</strong>
+                <strong>{Math.max(projects.length, 1)}+</strong>
                 <span>{t("projectsCount")}</span>
               </div>
             </div>
@@ -139,14 +138,14 @@ export default async function HomePage({
                 ))}
               </ul>
             ) : null}
-            <p className="mt-5 max-w-2xl text-base leading-8 text-fg-muted sm:text-lg">
+            <p className="mt-5 text-sm leading-7 text-fg-muted sm:text-base sm:leading-8">
               {bio}
             </p>
-            <div className="surface mt-6 inline-block p-4 text-sm leading-7 text-fg-muted">
+            <div className="surface mt-5 p-3.5 text-start text-sm leading-7 text-fg-muted sm:inline-block sm:p-4">
               {s("founderOf")}{" "}
               <a
                 href={MUDIRI.site}
-                className="text-accent hover:underline"
+                className="font-semibold text-accent hover:underline"
                 rel="noopener noreferrer"
                 data-track="hero-mudiri"
               >
@@ -155,30 +154,26 @@ export default async function HomePage({
               {" · "}
               <a
                 href={MUDIRI.shop}
-                className="text-ink hover:underline"
+                className="font-semibold text-ink hover:underline"
                 rel="noopener noreferrer"
                 data-track="hero-shop"
               >
                 mudiridigi.shop
               </a>
             </div>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="btn-row mt-7">
               <Link href="/contact" className="btn btn-primary focus-ring" data-track="hero-consult">
                 {t("ctaPrimary")}
               </Link>
               <Link href="/projects" className="btn btn-ghost focus-ring" data-track="hero-work">
                 {t("ctaSecondary")}
               </Link>
-              <Link href="/services" className="btn btn-ghost focus-ring" data-track="hero-services">
+              <Link href="/services" className="btn btn-ink focus-ring" data-track="hero-services">
                 {t("ctaServices")}
               </Link>
             </div>
           </div>
         </div>
-
-        <p className="mt-12 text-xs uppercase tracking-[0.22em] text-fg-muted">
-          {t("scroll")} ↓
-        </p>
       </section>
 
       <section className="container-page py-16">
@@ -197,6 +192,7 @@ export default async function HomePage({
               <Link
                 href={`/projects/${project.slug}`}
                 className="work-row focus-ring group grid md:grid-cols-[0.18fr_1.4fr_0.9fr]"
+                data-track={`home-project-${project.slug}`}
               >
                 <span className="metric text-sm text-fg-muted">0{i + 1}</span>
                 <div>
@@ -264,7 +260,8 @@ export default async function HomePage({
             <Reveal key={service.id} delay={i * 0.04} direction="scale">
               <Link
                 href={`/services/${service.slug}`}
-                className="surface focus-ring block h-full p-5 transition hover:border-accent/40"
+                className="service-tile focus-ring"
+                data-track={`home-service-${service.slug}`}
               >
                 <h3 className="text-lg font-semibold">
                   {loc === "ar" ? service.titleAr : service.titleEn}
@@ -335,6 +332,15 @@ export default async function HomePage({
       </section>
 
       <ConsultCTA />
+
+      <div className="mobile-cta-bar md:hidden">
+        <Link href="/contact" className="btn btn-primary focus-ring !min-h-11 !text-sm" data-track="mobile-bar-consult">
+          {t("ctaPrimary")}
+        </Link>
+        <Link href="/projects" className="btn btn-ghost focus-ring !min-h-11 !text-sm" data-track="mobile-bar-work">
+          {t("ctaSecondary")}
+        </Link>
+      </div>
     </>
   );
 }

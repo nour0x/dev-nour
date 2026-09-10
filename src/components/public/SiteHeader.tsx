@@ -39,9 +39,13 @@ export function SiteHeader() {
   const otherLocale = locale === "ar" ? "en" : "ar";
 
   return (
-    <header className="site-header sticky top-0 z-50">
-      <div className="container-page flex h-[4.25rem] items-center justify-between gap-3">
-        <Link href="/" className="display focus-ring text-[1.35rem] font-bold tracking-tight text-accent" data-track="nav-brand">
+    <header className="site-header">
+      <div className="container-page flex h-[4.1rem] items-center justify-between gap-2 sm:h-[4.25rem] sm:gap-3">
+        <Link
+          href="/"
+          className="display focus-ring text-[1.2rem] font-bold tracking-tight text-accent sm:text-[1.35rem]"
+          data-track="nav-brand"
+        >
           {brand("brand")}
         </Link>
 
@@ -55,8 +59,8 @@ export function SiteHeader() {
                 href={href}
                 data-track={`nav-${key}`}
                 className={cn(
-                  "focus-ring px-3 py-2 text-[0.84rem] text-fg-muted transition hover:text-fg",
-                  active && "text-accent"
+                  "focus-ring rounded-sm px-2.5 py-2 text-[0.82rem] text-fg-muted transition hover:text-fg",
+                  active && "bg-accent/10 font-semibold text-accent"
                 )}
               >
                 {t(key)}
@@ -65,7 +69,7 @@ export function SiteHeader() {
           })}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           <button
             type="button"
             className="focus-ring inline-flex h-10 w-10 items-center justify-center border border-border"
@@ -78,14 +82,14 @@ export function SiteHeader() {
           <Link
             href="/contact"
             data-track="header-consult"
-            className="btn btn-primary focus-ring hidden !min-h-10 !px-4 !py-2 text-sm sm:inline-flex"
+            className="btn btn-primary focus-ring !min-h-10 !px-3 !py-2 text-xs sm:!px-4 sm:text-sm"
           >
             {locale === "ar" ? "استشارة" : "Consult"}
           </Link>
           <Link
             href={pathname || "/"}
             locale={otherLocale}
-            className="focus-ring border border-border px-3 py-2 text-sm text-fg-muted hover:text-fg"
+            className="focus-ring hidden border border-border px-3 py-2 text-sm text-fg-muted hover:text-fg sm:inline-flex"
             hrefLang={otherLocale}
             data-track="lang-switch"
           >
@@ -97,6 +101,7 @@ export function SiteHeader() {
             aria-expanded={open}
             aria-controls="mobile-nav"
             aria-label={open ? "Close menu" : "Open menu"}
+            data-track="mobile-menu-toggle"
             onClick={() => setOpen((v) => !v)}
           >
             {open ? <X size={18} /> : <Menu size={18} />}
@@ -107,7 +112,7 @@ export function SiteHeader() {
       {open ? (
         <nav
           id="mobile-nav"
-          className="border-t border-border bg-bg-elevated px-4 py-3 lg:hidden"
+          className="border-t border-border bg-bg-elevated px-3 py-2 lg:hidden"
           aria-label="Mobile"
         >
           <ul className="flex flex-col">
@@ -115,13 +120,25 @@ export function SiteHeader() {
               <li key={key}>
                 <Link
                   href={hrefMap[key]}
-                  className="focus-ring block px-2 py-3 text-fg-muted hover:text-accent"
+                  data-track={`mobile-nav-${key}`}
+                  className="focus-ring block rounded-sm px-3 py-3.5 text-fg-muted hover:bg-accent/10 hover:text-accent"
                   onClick={() => setOpen(false)}
                 >
                   {t(key)}
                 </Link>
               </li>
             ))}
+            <li className="px-2 pb-2 pt-1">
+              <Link
+                href={pathname || "/"}
+                locale={otherLocale}
+                data-track="mobile-lang-switch"
+                className="btn btn-ghost btn-block focus-ring !min-h-11"
+                onClick={() => setOpen(false)}
+              >
+                {otherLocale === "ar" ? "العربية" : "English"}
+              </Link>
+            </li>
           </ul>
         </nav>
       ) : null}

@@ -15,7 +15,7 @@ export function ProfilePhoto({
   size?: "sm" | "md" | "lg" | "xl";
 }) {
   const dim =
-    size === "sm" ? 72 : size === "md" ? 120 : size === "xl" ? 300 : 240;
+    size === "sm" ? 72 : size === "md" ? 120 : size === "xl" ? 300 : 220;
   const initials = name
     .split(/\s+/)
     .filter(Boolean)

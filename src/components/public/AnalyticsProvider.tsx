@@ -178,15 +178,18 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
       ) as HTMLElement | null;
       if (!el) return;
       const href = el instanceof HTMLAnchorElement ? el.href : el.getAttribute("href");
+      const track = el.getAttribute("data-track");
       push({
         clientEventId: rid("clk"),
         type: "click",
         path: pathname || "/",
-        label: readableLabel(el),
+        label: track || readableLabel(el),
         target: href || el.id || el.className?.toString?.().slice(0, 120) || el.tagName,
         meta: {
           tag: el.tagName.toLowerCase(),
           text: el.innerText?.trim().slice(0, 120) || "",
+          track: track || "",
+          locale: document.documentElement.lang || "",
         },
       });
     };
