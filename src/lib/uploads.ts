@@ -4,7 +4,7 @@ import path from "path";
 export function getUploadsDir() {
   const custom = process.env.UPLOAD_DIR?.trim();
   if (custom) return custom;
-  return path.join(process.cwd(), "public", "uploads");
+  return path.join(/*turbopackIgnore: true*/ process.cwd(), "public", "uploads");
 }
 
 export function safeUploadName(name: string) {
@@ -16,8 +16,8 @@ export async function resolveUploadPath(filename: string) {
   if (!safe) return null;
 
   const candidates = [
-    path.join(getUploadsDir(), safe),
-    path.join(process.cwd(), "public", "uploads", safe),
+    path.join(/*turbopackIgnore: true*/ getUploadsDir(), safe),
+    path.join(/*turbopackIgnore: true*/ process.cwd(), "public", "uploads", safe),
   ];
 
   for (const candidate of candidates) {

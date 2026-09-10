@@ -1,3 +1,5 @@
+"use client";
+
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { usePathname } from "@/i18n/navigation";
 import type { ReactNode } from "react";
