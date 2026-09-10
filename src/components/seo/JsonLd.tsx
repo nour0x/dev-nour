@@ -13,6 +13,7 @@ type JsonLdArgs = {
     bioEn: string;
     email?: string | null;
     githubUrl?: string | null;
+    avatarUrl?: string | null;
   } | null;
   path?: string;
   socialUrls?: string[];
@@ -28,6 +29,11 @@ export function buildPersonGraph({ locale, profile, path = "", socialUrls = [] }
     locale === "ar" ? profile?.bioAr || "" : profile?.bioEn || "";
   const brand = profile?.brandName || "Dev Nour";
   const url = siteUrl(path || `/${locale}`);
+  const image = profile?.avatarUrl
+    ? profile.avatarUrl.startsWith("http")
+      ? profile.avatarUrl
+      : siteUrl(profile.avatarUrl)
+    : undefined;
 
   const sameAs = [
     ...socialUrls,
@@ -47,6 +53,11 @@ export function buildPersonGraph({ locale, profile, path = "", socialUrls = [] }
         inLanguage: [locale === "ar" ? "ar" : "en"],
         sameAs: [MUDIRI.site, MUDIRI.shop],
         publisher: { "@id": `${siteUrl()}/#person` },
+        potentialAction: {
+          "@type": "CommunicateAction",
+          name: locale === "ar" ? "استشارة مجانية" : "Free consultation",
+          target: siteUrl(`/${locale}/contact`),
+        },
       },
       {
         "@type": "Person",
@@ -56,10 +67,22 @@ export function buildPersonGraph({ locale, profile, path = "", socialUrls = [] }
         jobTitle,
         description,
         url,
+        image,
         email: profile?.email || undefined,
         sameAs,
         worksFor: { "@id": `${siteUrl()}/#mudiri` },
         affiliation: { "@id": `${siteUrl()}/#mudiri` },
+        knowsAbout: [
+          "Next.js",
+          "Laravel",
+          "Flutter",
+          "SEO",
+          "GEO",
+          "AEO",
+          "E-commerce",
+          "CRM",
+          "ERP",
+        ],
       },
       {
         "@type": "Organization",

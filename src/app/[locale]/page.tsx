@@ -16,7 +16,7 @@ import {
 } from "@/lib/content";
 import { formatPrice, parseTags } from "@/lib/utils";
 import type { Locale } from "@/i18n/config";
-import { siteUrl, MUDIRI } from "@/lib/seo";
+import { MUDIRI, buildPageMetadata } from "@/lib/seo";
 
 export async function generateMetadata({
   params,
@@ -26,33 +26,24 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "meta" });
   const settings = await getSettings();
+  const profile = await getProfile();
   const title =
     locale === "ar" ? settings.defaultMetaTitleAr : settings.defaultMetaTitleEn;
   const description =
     locale === "ar" ? settings.defaultMetaDescAr : settings.defaultMetaDescEn;
 
-  return {
+  return buildPageMetadata({
+    locale,
+    path: `/${locale}`,
     title: title || t("homeTitle"),
     description: description || t("homeDesc"),
-    alternates: {
-      canonical: siteUrl(`/${locale}`),
-      languages: {
-        ar: siteUrl("/ar"),
-        en: siteUrl("/en"),
-        "x-default": siteUrl("/en"),
-      },
-    },
-    openGraph: {
-      title: title || t("homeTitle"),
-      description: description || t("homeDesc"),
-      url: siteUrl(`/${locale}`),
-      siteName: "Dev Nour",
-      type: "website",
-      images: settings.ogImageUrl
-        ? [settings.ogImageUrl]
-        : undefined,
-    },
-  };
+    keywords:
+      locale === "ar"
+        ? ["استشارة مجانية", "Easy Orders", "Shopify", "Flutter", "Laravel"]
+        : ["free consult", "Easy Orders", "Shopify", "Flutter", "Laravel"],
+    image: settings.ogImageUrl || profile?.avatarUrl,
+    type: "profile",
+  });
 }
 
 function byCategory(
@@ -92,18 +83,20 @@ export default async function HomePage({
   const frameworks = byCategory(skills, loc, ["أطر", "framework", "تقني"]);
   const platforms = byCategory(skills, loc, ["منص", "platform", "تخصيص"]);
   const ads = byCategory(skills, loc, ["إعلان", "ads", "growth"]);
+  const indexing = byCategory(skills, loc, ["فهرس", "index", "ذكاء", "ai", "seo", "geo"]);
+  const heroSkills = skills.slice(0, 8);
+  const years = profile?.yearsExperience ?? 5;
+  const age = profile?.age;
 
   return (
     <>
-      <section className="container-page flex min-h-[calc(100vh-4.25rem)] flex-col justify-center py-14 sm:py-20">
-        <Reveal>
-          <p className="eyebrow">{t("kicker")}</p>
-          <h1 className="display mt-5 text-[clamp(3.2rem,10vw,7rem)] font-extrabold">
-            {profile?.brandName || "Dev Nour"}
-          </h1>
-        </Reveal>
+      <section className="container-page flex min-h-[calc(100vh-4.25rem)] flex-col justify-center py-12 sm:py-16">
+        <p className="eyebrow">{t("kicker")}</p>
+        <h1 className="display mt-4 text-[clamp(2.8rem,9vw,6.2rem)] font-extrabold">
+          {profile?.brandName || "Dev Nour"}
+        </h1>
 
-        <Reveal delay={0.08} className="hero-intro mt-10">
+        <div className="hero-intro mt-10">
           <ProfilePhoto
             src={profile?.avatarUrl}
             name={name}
@@ -114,6 +107,35 @@ export default async function HomePage({
           <div>
             <p className="text-2xl font-semibold sm:text-3xl">{name}</p>
             <p className="mt-2 text-lg text-accent sm:text-xl">{title}</p>
+            <div className="hero-stats mt-5" aria-label={t("statsLabel")}>
+              {age ? (
+                <div className="hero-stat">
+                  <strong>{age}</strong>
+                  <span>{t("age")}</span>
+                </div>
+              ) : null}
+              <div className="hero-stat">
+                <strong>{years}+</strong>
+                <span>{t("experienceYears")}</span>
+              </div>
+              <div className="hero-stat">
+                <strong>{skills.length}</strong>
+                <span>{t("skillsCount")}</span>
+              </div>
+              <div className="hero-stat">
+                <strong>{projects.length}+</strong>
+                <span>{t("projectsCount")}</span>
+              </div>
+            </div>
+            {heroSkills.length ? (
+              <ul className="hero-chips mt-5" aria-label={s("skills")}>
+                {heroSkills.map((sk) => (
+                  <li key={sk.id} className="hero-chip">
+                    {loc === "ar" ? sk.nameAr : sk.nameEn}
+                  </li>
+                ))}
+              </ul>
+            ) : null}
             <p className="mt-5 max-w-2xl text-base leading-8 text-fg-muted sm:text-lg">
               {bio}
             </p>
@@ -144,9 +166,12 @@ export default async function HomePage({
               <Link href="/projects" className="btn btn-ghost focus-ring" data-track="hero-work">
                 {t("ctaSecondary")}
               </Link>
+              <Link href="/services" className="btn btn-ghost focus-ring" data-track="hero-services">
+                {t("ctaServices")}
+              </Link>
             </div>
           </div>
-        </Reveal>
+        </div>
 
         <p className="mt-12 text-xs uppercase tracking-[0.22em] text-fg-muted">
           {t("scroll")} ↓
@@ -266,6 +291,7 @@ export default async function HomePage({
           <SkillGroup title={s("frameworks")} items={frameworks} loc={loc} levelLabel={s("level")} />
           <SkillGroup title={s("platforms")} items={platforms} loc={loc} levelLabel={s("level")} />
           <SkillGroup title={s("ads")} items={ads} loc={loc} levelLabel={s("level")} />
+          <SkillGroup title={s("indexing")} items={indexing} loc={loc} levelLabel={s("level")} />
         </div>
         <div className="mt-8">
           <Link href="/skills" className="text-sm text-accent hover:underline">

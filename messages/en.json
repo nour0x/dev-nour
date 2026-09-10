@@ -13,8 +13,14 @@
   "hero": {
     "ctaPrimary": "Book a free consult",
     "ctaSecondary": "See my work",
+    "ctaServices": "Explore services",
     "scroll": "Scroll",
-    "kicker": "Founder of Mudiri Digi · Digital products"
+    "kicker": "Founder of Mudiri Digi · Digital products",
+    "age": "Age",
+    "experienceYears": "Years exp.",
+    "skillsCount": "Skills",
+    "projectsCount": "Featured",
+    "statsLabel": "Profile highlights"
   },
   "sections": {
     "featured": "Selected work",
@@ -24,6 +30,7 @@
     "frameworks": "Frameworks & stack",
     "platforms": "Store platforms & customization",
     "ads": "Ads & growth",
+    "indexing": "Indexing · GEO · AI",
     "experience": "Clear, distinctive experience",
     "contact": "Tell me what you need — we'll shape it together",
     "consult": "Free consultation",

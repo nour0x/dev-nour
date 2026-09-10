@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { getPublishedExperience } from "@/lib/content";
-import { siteUrl } from "@/lib/seo";
+import { buildPageMetadata } from "@/lib/seo";
 import type { Locale } from "@/i18n/config";
 import { Reveal } from "@/components/public/Reveal";
 
@@ -11,17 +11,22 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  return {
-    title: locale === "ar" ? "الخبرات | Dev Nour" : "Experience | Dev Nour",
-    alternates: {
-      canonical: siteUrl(`/${locale}/experience`),
-      languages: {
-        ar: siteUrl("/ar/experience"),
-        en: siteUrl("/en/experience"),
-        "x-default": siteUrl("/en/experience"),
-      },
-    },
-  };
+  return buildPageMetadata({
+    locale,
+    path: `/${locale}/experience`,
+    title:
+      locale === "ar"
+        ? "الخبرات المهنية | Dev Nour"
+        : "Professional Experience | Dev Nour",
+    description:
+      locale === "ar"
+        ? "مسار نور محمد كمؤسس موديري ديجي ومطور منتجات رقمية ومتاجر."
+        : "Career path of Nour Mohamed as Mudiri Digi founder and product developer.",
+    keywords:
+      locale === "ar"
+        ? ["خبرات", "مؤسس", "موديري ديجي"]
+        : ["experience", "founder", "Mudiri Digi"],
+  });
 }
 
 export default async function ExperiencePage({

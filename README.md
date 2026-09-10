@@ -50,12 +50,14 @@ Default admin (from `.env`):
 1. Create a Node.js app / website that supports Next.js.
 2. Connect Git: `https://github.com/nour0x/dev-nour` branch `main`.
 3. Set env vars (strong `JWT_SECRET`, live `NEXT_PUBLIC_SITE_URL`).
-4. **SQLite path must be absolute and outside `hbuilds/current`** (relative `file:./prod.db` breaks across build/runtime and gets wiped on redeploy):
+4. **SQLite + uploads must be absolute paths outside `hbuilds/current`**:
 
 ```bash
-mkdir -p ~/domains/dev.mudiridigi.com/data
+mkdir -p ~/domains/dev.mudiridigi.com/data/uploads
 # In hPanel env / hbuilds/config/.env:
 # DATABASE_URL="file:/home/u194449289/domains/dev.mudiridigi.com/data/prod.db"
+# UPLOAD_DIR="/home/u194449289/domains/dev.mudiridigi.com/data/uploads"
+# NEXT_PUBLIC_SITE_URL="https://dev.mudiridigi.com"
 ```
 
 5. Build: `npm ci && npm run build`

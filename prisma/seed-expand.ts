@@ -25,7 +25,8 @@ async function main() {
           "أبني وأطلق منتجات رقمية جاهزة للسوق: تطبيقات أندرويد وويب وiOS، متاجر إلكترونية، منتجات رقمية، أنظمة إدارية، CRM وERP. أسّست موديري ديجي كشركتي، وكمان بخصص Easy Orders وShopify وWordPress وصفحات هبوط تحويل عالية — مع SEO وإعلانات من أول يوم.",
         bioEn:
           "I design and ship market-ready digital products: Android, web, and iOS apps, e-commerce, digital goods, admin systems, CRM, and ERP. I founded Mudiri Digi as my company, and I also customize Easy Orders, Shopify, WordPress, and high-converting landings — with SEO and ads from day one.",
-        // Keep avatar empty until uploaded via Admin → Settings
+        yearsExperience: 5,
+        // Set age + avatar in Admin → Settings
       },
     });
   }
@@ -160,6 +161,14 @@ async function main() {
     ["Google Merchant", "Google Merchant", "إعلانات ونمو", "Ads & Growth", 90],
     ["SEO / GEO / AEO", "SEO / GEO / AEO", "إعلانات ونمو", "Ads & Growth", 94],
     ["Pixels · GA4 · GTM", "Pixels · GA4 · GTM", "إعلانات ونمو", "Ads & Growth", 90],
+    ["Agentic SEO (AEO)", "Agentic SEO (AEO)", "فهرسة وذكاء", "Indexing & AI", 92],
+    ["llms.txt · AI crawlers", "llms.txt · AI crawlers", "فهرسة وذكاء", "Indexing & AI", 90],
+    ["JSON-LD / Schema.org", "JSON-LD / Schema.org", "فهرسة وذكاء", "Indexing & AI", 93],
+    ["Core Web Vitals", "Core Web Vitals", "فهرسة وذكاء", "Indexing & AI", 88],
+    ["next-intl i18n", "next-intl i18n", "فهرسة وذكاء", "Indexing & AI", 90],
+    ["Prisma + SQLite", "Prisma + SQLite", "فهرسة وذكاء", "Indexing & AI", 88],
+    ["First-party analytics", "First-party analytics", "فهرسة وذكاء", "Indexing & AI", 86],
+    ["Lighthouse / CWV tuning", "Lighthouse / CWV tuning", "فهرسة وذكاء", "Indexing & AI", 85],
   ] as const;
 
   await prisma.skill.createMany({

@@ -19,6 +19,8 @@ export function SettingsManager() {
     locationEn: "",
     avatarUrl: "",
     resumeUrl: "",
+    age: "",
+    yearsExperience: "5",
   });
   const [settings, setSettings] = useState({
     siteUrl: "http://localhost:3000",
@@ -27,7 +29,7 @@ export function SettingsManager() {
     defaultMetaDescAr: "",
     defaultMetaDescEn: "",
     ogImageUrl: "",
-    accentColor: "#c8925a",
+    accentColor: "#ff2d55",
     googleVerificationMeta: "",
     googleVerificationFile: "",
     googleVerificationHtml: "",
@@ -55,6 +57,11 @@ export function SettingsManager() {
             locationEn: data.profile.locationEn || "",
             avatarUrl: data.profile.avatarUrl || "",
             resumeUrl: data.profile.resumeUrl || "",
+            age: data.profile.age != null ? String(data.profile.age) : "",
+            yearsExperience:
+              data.profile.yearsExperience != null
+                ? String(data.profile.yearsExperience)
+                : "5",
           });
         }
         if (data.settings) {
@@ -65,7 +72,7 @@ export function SettingsManager() {
             defaultMetaDescAr: data.settings.defaultMetaDescAr || "",
             defaultMetaDescEn: data.settings.defaultMetaDescEn || "",
             ogImageUrl: data.settings.ogImageUrl || "",
-            accentColor: data.settings.accentColor || "#c8925a",
+            accentColor: data.settings.accentColor || "#ff2d55",
             googleVerificationMeta: data.settings.googleVerificationMeta || "",
             googleVerificationFile: data.settings.googleVerificationFile || "",
             googleVerificationHtml: data.settings.googleVerificationHtml || "",
@@ -76,10 +83,15 @@ export function SettingsManager() {
 
   async function saveProfile(e: FormEvent) {
     e.preventDefault();
+    const payload = {
+      ...profile,
+      age: profile.age ? Number(profile.age) : null,
+      yearsExperience: Number(profile.yearsExperience || 5),
+    };
     const res = await fetch("/api/admin/settings", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ type: "profile", data: profile }),
+      body: JSON.stringify({ type: "profile", data: payload }),
     });
     setMsg(res.ok ? "Profile saved" : "Profile save failed");
   }
@@ -139,6 +151,8 @@ export function SettingsManager() {
               ["githubUrl", "GitHub"],
               ["locationAr", "Location AR"],
               ["locationEn", "Location EN"],
+              ["age", "Age"],
+              ["yearsExperience", "Years of experience"],
             ] as const
           ).map(([key, label]) => (
             <div key={key}>

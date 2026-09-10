@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import slugify from "slugify";
 
 export type LocalizedSeoInput = {
@@ -98,4 +99,89 @@ export function siteUrl(path = "") {
   );
   if (!path) return base;
   return `${base}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
+export type PageMetaInput = {
+  locale: string;
+  path: string;
+  title: string;
+  description: string;
+  keywords?: string[];
+  image?: string | null;
+  type?: "website" | "article" | "profile";
+};
+
+export function buildPageMetadata({
+  locale,
+  path,
+  title,
+  description,
+  keywords = [],
+  image,
+  type = "website",
+}: PageMetaInput): Metadata {
+  const normalized = path.startsWith("/") ? path : `/${path}`;
+  const url = siteUrl(normalized);
+  const bare = normalized.replace(/^\/(ar|en)/, "") || "/";
+  const ogImage = image
+    ? image.startsWith("http")
+      ? image
+      : siteUrl(image)
+    : undefined;
+
+  const baseKeywords =
+    locale === "ar"
+      ? [
+          "نور محمد",
+          "Dev Nour",
+          "موديري ديجي",
+          "تطوير ويب",
+          "تطبيقات",
+          "متاجر إلكترونية",
+          "SEO",
+          "GEO",
+          "AEO",
+        ]
+      : [
+          "Nour Mohamed",
+          "Dev Nour",
+          "Mudiri Digi",
+          "web developer",
+          "Flutter",
+          "Next.js",
+          "Laravel",
+          "SEO",
+          "GEO",
+          "AEO",
+        ];
+
+  return {
+    title,
+    description,
+    keywords: [...keywords, ...baseKeywords],
+    alternates: {
+      canonical: url,
+      languages: {
+        ar: siteUrl(`/ar${bare === "/" ? "" : bare}`),
+        en: siteUrl(`/en${bare === "/" ? "" : bare}`),
+        "x-default": siteUrl(`/en${bare === "/" ? "" : bare}`),
+      },
+    },
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: "Dev Nour",
+      type: type === "article" ? "article" : "website",
+      locale: locale === "ar" ? "ar_EG" : "en_US",
+      images: ogImage ? [{ url: ogImage, alt: title }] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ogImage ? [ogImage] : undefined,
+    },
+    robots: { index: true, follow: true },
+  };
 }

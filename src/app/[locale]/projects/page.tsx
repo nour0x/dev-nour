@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { getPublishedProjects, getSettings } from "@/lib/content";
+import { getPublishedProjects } from "@/lib/content";
 import { parseTags } from "@/lib/utils";
-import { siteUrl } from "@/lib/seo";
+import { buildPageMetadata } from "@/lib/seo";
 import type { Locale } from "@/i18n/config";
 import { Reveal } from "@/components/public/Reveal";
 import { ConsultCTA } from "@/components/public/ConsultCTA";
@@ -14,20 +14,19 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const settings = await getSettings();
-  return {
-    title: locale === "ar" ? "الأعمال | Dev Nour" : "Work | Dev Nour",
+  return buildPageMetadata({
+    locale,
+    path: `/${locale}/projects`,
+    title: locale === "ar" ? "الأعمال والمشاريع | Dev Nour" : "Work & Case Studies | Dev Nour",
     description:
-      locale === "ar" ? settings.defaultMetaDescAr : settings.defaultMetaDescEn,
-    alternates: {
-      canonical: siteUrl(`/${locale}/projects`),
-      languages: {
-        ar: siteUrl("/ar/projects"),
-        en: siteUrl("/en/projects"),
-        "x-default": siteUrl("/en/projects"),
-      },
-    },
-  };
+      locale === "ar"
+        ? "مشاريع ودراسات حالة لنور محمد: متاجر، أنظمة، وتطبيقات جاهزة للسوق."
+        : "Projects and case studies by Nour Mohamed: stores, systems, and market-ready apps.",
+    keywords:
+      locale === "ar"
+        ? ["مشاريع", "دراسة حالة", "متاجر", "تطبيقات"]
+        : ["portfolio", "case studies", "ecommerce", "apps"],
+  });
 }
 
 export default async function ProjectsPage({

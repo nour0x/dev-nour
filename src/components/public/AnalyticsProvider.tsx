@@ -207,9 +207,9 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
         scrollMax: scrollMax.current,
       });
       flush();
-    }, 5000);
+    }, 20000);
 
-    const flushTimer = window.setInterval(flush, 8000);
+    const flushTimer = window.setInterval(flush, 15000);
 
     window.addEventListener("scroll", onScroll, { passive: true });
     document.addEventListener("visibilitychange", onVisibility);

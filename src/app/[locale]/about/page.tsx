@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { getProfile, getSocialLinks, getSiteLinks } from "@/lib/content";
-import { siteUrl, MUDIRI } from "@/lib/seo";
+import { MUDIRI, buildPageMetadata } from "@/lib/seo";
 import type { Locale } from "@/i18n/config";
 import { Reveal } from "@/components/public/Reveal";
 import { ProfilePhoto } from "@/components/public/ProfilePhoto";
@@ -14,17 +14,19 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  return {
-    title: locale === "ar" ? "من أنا | Dev Nour" : "About | Dev Nour",
-    alternates: {
-      canonical: siteUrl(`/${locale}/about`),
-      languages: {
-        ar: siteUrl("/ar/about"),
-        en: siteUrl("/en/about"),
-        "x-default": siteUrl("/en/about"),
-      },
-    },
-  };
+  return buildPageMetadata({
+    locale,
+    path: `/${locale}/about`,
+    title: locale === "ar" ? "من أنا — نور محمد | Dev Nour" : "About Nour Mohamed | Dev Nour",
+    description:
+      locale === "ar"
+        ? "تعرف على نور محمد مؤسس موديري ديجي: تطوير ويب، تطبيقات، متاجر، SEO وGEO."
+        : "Meet Nour Mohamed, founder of Mudiri Digi: web, apps, stores, SEO and GEO.",
+    keywords:
+      locale === "ar"
+        ? ["من أنا", "مؤسس موديري ديجي", "مطور ويب مصر"]
+        : ["about", "Mudiri Digi founder", "web developer Egypt"],
+  });
 }
 
 export default async function AboutPage({

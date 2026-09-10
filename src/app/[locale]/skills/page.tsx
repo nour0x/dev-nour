@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { getPublishedSkills } from "@/lib/content";
-import { siteUrl } from "@/lib/seo";
+import { buildPageMetadata } from "@/lib/seo";
 import type { Locale } from "@/i18n/config";
 import { Reveal } from "@/components/public/Reveal";
 
@@ -11,17 +11,22 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  return {
-    title: locale === "ar" ? "المهارات | Dev Nour" : "Skills | Dev Nour",
-    alternates: {
-      canonical: siteUrl(`/${locale}/skills`),
-      languages: {
-        ar: siteUrl("/ar/skills"),
-        en: siteUrl("/en/skills"),
-        "x-default": siteUrl("/en/skills"),
-      },
-    },
-  };
+  return buildPageMetadata({
+    locale,
+    path: `/${locale}/skills`,
+    title:
+      locale === "ar"
+        ? "المهارات والتقنيات | Dev Nour"
+        : "Skills & Stack | Dev Nour",
+    description:
+      locale === "ar"
+        ? "مهارات نور محمد: Laravel، Flutter، Next.js، SEO/GEO/AEO، وتحليلات."
+        : "Skills of Nour Mohamed: Laravel, Flutter, Next.js, SEO/GEO/AEO, and analytics.",
+    keywords:
+      locale === "ar"
+        ? ["مهارات", "Laravel", "Flutter", "Next.js", "SEO"]
+        : ["skills", "Laravel", "Flutter", "Next.js", "SEO"],
+  });
 }
 
 export default async function SkillsPage({

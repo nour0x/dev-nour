@@ -17,21 +17,23 @@ model User {
 }
 
 model Profile {
-  id          String  @id @default(cuid())
-  brandName   String  @default("Dev Nour")
-  nameAr      String  @default("نور محمد")
-  nameEn      String  @default("Nour Mohamed")
-  titleAr     String  @default("مطور ويب وتصميم رقمي")
-  titleEn     String  @default("Web Developer & Digital Designer")
-  bioAr       String  @default("")
-  bioEn       String  @default("")
-  avatarUrl   String?
-  locationAr  String?
-  locationEn  String?
-  email       String?
-  phone       String?
-  githubUrl   String?
-  resumeUrl   String?
+  id               String  @id @default(cuid())
+  brandName        String  @default("Dev Nour")
+  nameAr           String  @default("نور محمد")
+  nameEn           String  @default("Nour Mohamed")
+  titleAr          String  @default("مطور ويب وتصميم رقمي")
+  titleEn          String  @default("Web Developer & Digital Designer")
+  bioAr            String  @default("")
+  bioEn            String  @default("")
+  avatarUrl        String?
+  locationAr       String?
+  locationEn       String?
+  email            String?
+  phone            String?
+  githubUrl        String?
+  resumeUrl        String?
+  age              Int?
+  yearsExperience  Int     @default(5)
 }
 
 model Project {

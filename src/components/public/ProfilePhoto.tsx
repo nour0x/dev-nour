@@ -1,7 +1,14 @@
-"use client";
-
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+
+function isLocalMedia(src?: string | null) {
+  if (!src) return false;
+  return (
+    src.startsWith("/uploads/") ||
+    src.startsWith("/api/media/") ||
+    src.startsWith("uploads/")
+  );
+}
 
 export function ProfilePhoto({
   src,
@@ -17,13 +24,15 @@ export function ProfilePhoto({
   size?: "sm" | "md" | "lg" | "xl";
 }) {
   const dim =
-    size === "sm" ? 64 : size === "md" ? 112 : size === "xl" ? 280 : 180;
+    size === "sm" ? 64 : size === "md" ? 112 : size === "xl" ? 280 : 220;
   const initials = name
     .split(/\s+/)
     .filter(Boolean)
     .slice(0, 2)
     .map((p) => p[0]?.toUpperCase())
     .join("");
+
+  const local = isLocalMedia(src);
 
   return (
     <div
@@ -37,14 +46,16 @@ export function ProfilePhoto({
         <Image
           src={src}
           alt={alt}
-          fill
+          width={dim}
+          height={dim}
           sizes={`${dim}px`}
-          className="object-cover"
+          className="h-full w-full object-cover"
           priority={size === "lg" || size === "xl"}
+          unoptimized={local}
         />
       ) : (
         <div
-          className="flex h-full w-full items-center justify-center bg-[linear-gradient(145deg,#1a211c,#0c1014_55%,#24180f)]"
+          className="flex h-full w-full items-center justify-center bg-[linear-gradient(145deg,#1c1c1f,#0a0a0b_55%,#2a1218)]"
           aria-hidden
         >
           <span className="display text-[clamp(1.5rem,30%,4rem)] font-bold text-accent">

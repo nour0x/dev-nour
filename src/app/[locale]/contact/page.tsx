@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { getProfile, getSocialLinks } from "@/lib/content";
-import { siteUrl } from "@/lib/seo";
+import { buildPageMetadata } from "@/lib/seo";
 import type { Locale } from "@/i18n/config";
 import { Reveal } from "@/components/public/Reveal";
 import { ProfilePhoto } from "@/components/public/ProfilePhoto";
@@ -13,17 +13,22 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  return {
-    title: locale === "ar" ? "تواصل | Dev Nour" : "Contact | Dev Nour",
-    alternates: {
-      canonical: siteUrl(`/${locale}/contact`),
-      languages: {
-        ar: siteUrl("/ar/contact"),
-        en: siteUrl("/en/contact"),
-        "x-default": siteUrl("/en/contact"),
-      },
-    },
-  };
+  return buildPageMetadata({
+    locale,
+    path: `/${locale}/contact`,
+    title:
+      locale === "ar"
+        ? "استشارة مجانية وتواصل | Dev Nour"
+        : "Free Consult & Contact | Dev Nour",
+    description:
+      locale === "ar"
+        ? "احجز استشارة مجانية مع نور محمد لتحديد نطاق مشروعك والميزانية المناسبة."
+        : "Book a free consultation with Nour Mohamed to define scope and a fair budget.",
+    keywords:
+      locale === "ar"
+        ? ["استشارة مجانية", "تواصل", "عرض سعر", "واتساب"]
+        : ["free consultation", "contact", "quote", "whatsapp"],
+  });
 }
 
 export default async function ContactPage({

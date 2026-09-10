@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { getSiteLinks, getSocialLinks, getProfile } from "@/lib/content";
-import { siteUrl, MUDIRI } from "@/lib/seo";
+import { MUDIRI, buildPageMetadata, siteUrl } from "@/lib/seo";
 import type { Locale } from "@/i18n/config";
 import { Reveal } from "@/components/public/Reveal";
 import { ProfilePhoto } from "@/components/public/ProfilePhoto";
@@ -13,17 +13,22 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  return {
-    title: locale === "ar" ? "روابطي | Dev Nour" : "Links | Dev Nour",
-    alternates: {
-      canonical: siteUrl(`/${locale}/links`),
-      languages: {
-        ar: siteUrl("/ar/links"),
-        en: siteUrl("/en/links"),
-        "x-default": siteUrl("/en/links"),
-      },
-    },
-  };
+  return buildPageMetadata({
+    locale,
+    path: `/${locale}/links`,
+    title:
+      locale === "ar"
+        ? "روابط نور محمد | Dev Nour"
+        : "Nour Mohamed Links | Dev Nour",
+    description:
+      locale === "ar"
+        ? "كل روابط نور محمد: موديري ديجي، GitHub، منصات العمل الحر، واستشارة مجانية."
+        : "All links for Nour Mohamed: Mudiri Digi, GitHub, freelance platforms, and free consult.",
+    keywords:
+      locale === "ar"
+        ? ["روابط", "لينك إن بايو", "GitHub"]
+        : ["link in bio", "links", "GitHub"],
+  });
 }
 
 export default async function LinksPage({

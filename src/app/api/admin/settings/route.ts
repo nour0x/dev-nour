@@ -18,6 +18,8 @@ const profileSchema = z.object({
   phone: z.string().optional().nullable(),
   githubUrl: z.string().optional().nullable(),
   resumeUrl: z.string().optional().nullable(),
+  age: z.coerce.number().int().min(16).max(80).optional().nullable(),
+  yearsExperience: z.coerce.number().int().min(0).max(40).optional().default(5),
 });
 
 const settingsSchema = z.object({
@@ -27,7 +29,7 @@ const settingsSchema = z.object({
   defaultMetaDescAr: z.string().min(1),
   defaultMetaDescEn: z.string().min(1),
   ogImageUrl: z.string().optional().nullable(),
-  accentColor: z.string().optional().default("#14b8a6"),
+    accentColor: z.string().optional().default("#ff2d55"),
   googleVerificationMeta: z.string().optional().nullable(),
   googleVerificationFile: z.string().optional().nullable(),
   googleVerificationHtml: z.string().optional().nullable(),

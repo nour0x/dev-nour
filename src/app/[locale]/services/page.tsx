@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { getPublishedServices, getSettings } from "@/lib/content";
+import { getPublishedServices } from "@/lib/content";
 import { formatPrice } from "@/lib/utils";
-import { siteUrl } from "@/lib/seo";
+import { buildPageMetadata } from "@/lib/seo";
 import type { Locale } from "@/i18n/config";
 import { Reveal } from "@/components/public/Reveal";
 import { ConsultCTA } from "@/components/public/ConsultCTA";
@@ -14,20 +14,22 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const settings = await getSettings();
-  return {
-    title: locale === "ar" ? "خدماتي | Dev Nour" : "Services | Dev Nour",
+  return buildPageMetadata({
+    locale,
+    path: `/${locale}/services`,
+    title:
+      locale === "ar"
+        ? "خدمات تطوير ويب ومتاجر | Dev Nour"
+        : "Web, Apps & Store Services | Dev Nour",
     description:
-      locale === "ar" ? settings.defaultMetaDescAr : settings.defaultMetaDescEn,
-    alternates: {
-      canonical: siteUrl(`/${locale}/services`),
-      languages: {
-        ar: siteUrl("/ar/services"),
-        en: siteUrl("/en/services"),
-        "x-default": siteUrl("/en/services"),
-      },
-    },
-  };
+      locale === "ar"
+        ? "خدمات نور محمد: تطبيقات، متاجر، CRM/ERP، Easy Orders، Shopify، WordPress، SEO وإعلانات."
+        : "Services by Nour Mohamed: apps, stores, CRM/ERP, Easy Orders, Shopify, WordPress, SEO and ads.",
+    keywords:
+      locale === "ar"
+        ? ["خدمات", "Easy Orders", "Shopify", "CRM", "ERP"]
+        : ["services", "Easy Orders", "Shopify", "CRM", "ERP"],
+  });
 }
 
 export default async function ServicesPage({
