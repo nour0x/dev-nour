@@ -2,14 +2,26 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { MUDIRI, siteUrl } from "@/lib/seo";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
-  const [profile, projects, services, skills, experience] = await Promise.all([
-    prisma.profile.findFirst(),
-    prisma.project.findMany({ where: { published: true } }),
-    prisma.service.findMany({ where: { published: true } }),
-    prisma.skill.findMany({ where: { published: true } }),
-    prisma.experience.findMany({ where: { published: true } }),
-  ]);
+  let profile = null as Awaited<ReturnType<typeof prisma.profile.findFirst>>;
+  let projects: Awaited<ReturnType<typeof prisma.project.findMany>> = [];
+  let services: Awaited<ReturnType<typeof prisma.service.findMany>> = [];
+  let skills: Awaited<ReturnType<typeof prisma.skill.findMany>> = [];
+  let experience: Awaited<ReturnType<typeof prisma.experience.findMany>> = [];
+
+  try {
+    [profile, projects, services, skills, experience] = await Promise.all([
+      prisma.profile.findFirst(),
+      prisma.project.findMany({ where: { published: true } }),
+      prisma.service.findMany({ where: { published: true } }),
+      prisma.skill.findMany({ where: { published: true } }),
+      prisma.experience.findMany({ where: { published: true } }),
+    ]);
+  } catch {
+    // ignore during first deploy
+  }
 
   const body = `# ${profile?.brandName || "Dev Nour"} — Full LLM Index
 

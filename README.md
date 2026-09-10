@@ -48,21 +48,23 @@ Default admin (from `.env`):
 ## Hostinger deploy
 
 1. Create a Node.js app / website that supports Next.js.
-2. Upload the project (or connect Git).
-3. Set environment variables from `.env.example`.
-4. Build & start:
+2. Connect Git: `https://github.com/nour0x/dev-nour` branch `main`.
+3. Set environment variables from `.env.example` (use a strong `JWT_SECRET` and your live domain in `NEXT_PUBLIC_SITE_URL`).
+4. Build command (already includes DB create):
 
 ```bash
-npm ci
-npx prisma db push
-npx tsx prisma/seed.ts
-npm run build
-npm start
+npm ci && npm run build
 ```
 
-5. Persist `prisma/dev.db` and `public/uploads` between deploys (or migrate DB file to a durable path and update `DATABASE_URL`).
-6. Set `NEXT_PUBLIC_SITE_URL` to your live domain (`https://...`).
-7. Change `JWT_SECRET` and `ADMIN_PASSWORD` before going live.
+5. After first successful build, seed content once:
+
+```bash
+npx tsx prisma/seed.ts
+npx tsx prisma/seed-expand.ts
+```
+
+6. Start command: `npm start`
+7. Persist `prisma/*.db` and `public/uploads` between deploys.
 
 ## Scripts
 

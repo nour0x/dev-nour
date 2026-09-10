@@ -2,20 +2,46 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { MUDIRI, siteUrl } from "@/lib/seo";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
-  const [profile, projects, services] = await Promise.all([
-    prisma.profile.findFirst(),
-    prisma.project.findMany({
-      where: { published: true },
-      select: { slug: true, titleEn: true, summaryEn: true },
-      take: 20,
-    }),
-    prisma.service.findMany({
-      where: { published: true },
-      select: { slug: true, titleEn: true, summaryEn: true, priceAvg: true, currency: true },
-      take: 20,
-    }),
-  ]);
+  let profile = null as Awaited<ReturnType<typeof prisma.profile.findFirst>>;
+  let projects: Array<{
+    slug: string;
+    titleEn: string;
+    summaryEn: string;
+  }> = [];
+  let services: Array<{
+    slug: string;
+    titleEn: string;
+    summaryEn: string;
+    priceAvg: number | null;
+    currency: string;
+  }> = [];
+
+  try {
+    [profile, projects, services] = await Promise.all([
+      prisma.profile.findFirst(),
+      prisma.project.findMany({
+        where: { published: true },
+        select: { slug: true, titleEn: true, summaryEn: true },
+        take: 20,
+      }),
+      prisma.service.findMany({
+        where: { published: true },
+        select: {
+          slug: true,
+          titleEn: true,
+          summaryEn: true,
+          priceAvg: true,
+          currency: true,
+        },
+        take: 20,
+      }),
+    ]);
+  } catch {
+    // ignore during first deploy
+  }
 
   const name = profile?.nameEn || "Nour Mohamed";
   const brand = profile?.brandName || "Dev Nour";

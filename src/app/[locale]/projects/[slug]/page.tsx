@@ -13,9 +13,14 @@ type Props = { params: Promise<{ locale: string; slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
-  const project = await prisma.project.findFirst({
-    where: { slug, published: true },
-  });
+  let project = null;
+  try {
+    project = await prisma.project.findFirst({
+      where: { slug, published: true },
+    });
+  } catch {
+    return {};
+  }
   if (!project) return {};
   const title =
     locale === "ar"
@@ -58,9 +63,14 @@ export default async function ProjectDetailPage({ params }: Props) {
   setRequestLocale(locale);
   const loc = locale as Locale;
   const s = await getTranslations("sections");
-  const project = await prisma.project.findFirst({
-    where: { slug, published: true },
-  });
+  let project = null;
+  try {
+    project = await prisma.project.findFirst({
+      where: { slug, published: true },
+    });
+  } catch {
+    notFound();
+  }
   if (!project) notFound();
 
   const title = loc === "ar" ? project.titleAr : project.titleEn;

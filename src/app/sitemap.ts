@@ -2,17 +2,26 @@ import type { MetadataRoute } from "next";
 import { prisma } from "@/lib/db";
 import { MUDIRI, siteUrl } from "@/lib/seo";
 
+export const dynamic = "force-dynamic";
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [projects, services] = await Promise.all([
-    prisma.project.findMany({
-      where: { published: true },
-      select: { slug: true, updatedAt: true },
-    }),
-    prisma.service.findMany({
-      where: { published: true },
-      select: { slug: true, updatedAt: true },
-    }),
-  ]);
+  let projects: { slug: string; updatedAt: Date }[] = [];
+  let services: { slug: string; updatedAt: Date }[] = [];
+
+  try {
+    [projects, services] = await Promise.all([
+      prisma.project.findMany({
+        where: { published: true },
+        select: { slug: true, updatedAt: true },
+      }),
+      prisma.service.findMany({
+        where: { published: true },
+        select: { slug: true, updatedAt: true },
+      }),
+    ]);
+  } catch {
+    // DB may not be ready during first deploy/build
+  }
 
   const staticPaths = [
     "",
