@@ -12,6 +12,9 @@ prisma/dev.db
 public/uploads/*
 !public/uploads/.gitkeep
 
+# Local backups
+/backups
+
 # dependencies
 /node_modules
 /.pnp

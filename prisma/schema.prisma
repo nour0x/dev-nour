@@ -155,13 +155,13 @@ model ContactMessage {
 
 model SiteSetting {
   id                       String  @id @default(cuid())
-  siteUrl                  String  @default("http://localhost:3000")
+  siteUrl                  String  @default("https://dev.mudiridigi.com")
   defaultMetaTitleAr       String  @default("Dev Nour — نور محمد")
   defaultMetaTitleEn       String  @default("Dev Nour — Nour Mohamed")
   defaultMetaDescAr        String  @default("بورتفوليو نور محمد — تطوير ويب، واجهات حديثة، ومنتجات رقمية.")
   defaultMetaDescEn        String  @default("Portfolio of Nour Mohamed — web development, modern interfaces, and digital products.")
   ogImageUrl               String?
-  accentColor              String  @default("#14b8a6")
+  accentColor              String  @default("#ff2d55")
   googleVerificationMeta   String?
   googleVerificationFile   String?
   googleVerificationHtml   String?

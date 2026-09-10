@@ -4,6 +4,7 @@ import { getPublishedExperience } from "@/lib/content";
 import { buildPageMetadata } from "@/lib/seo";
 import type { Locale } from "@/i18n/config";
 import { Reveal } from "@/components/public/Reveal";
+import { ConsultCTA } from "@/components/public/ConsultCTA";
 
 export async function generateMetadata({
   params,
@@ -78,6 +79,8 @@ export default async function ExperiencePage({
           </Reveal>
         ))}
       </ol>
+
+      <ConsultCTA />
     </div>
   );
 }

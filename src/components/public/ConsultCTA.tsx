@@ -16,10 +16,18 @@ export async function ConsultCTA() {
         </h2>
         <p className="mt-4 max-w-2xl text-fg-muted">{s("consultHint")}</p>
         <div className="mt-8 flex flex-wrap gap-3">
-          <Link href="/contact" className="btn btn-primary focus-ring">
+          <Link
+            href="/contact"
+            className="btn btn-primary focus-ring"
+            data-track="list-consult"
+          >
             {t("ctaPrimary")}
           </Link>
-          <Link href="/projects" className="btn btn-ghost focus-ring">
+          <Link
+            href="/projects"
+            className="btn btn-ghost focus-ring"
+            data-track="list-work"
+          >
             {t("ctaSecondary")}
           </Link>
         </div>

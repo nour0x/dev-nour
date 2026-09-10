@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/db";
 
 const defaultSettings = {
-  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://dev.mudiridigi.com",
   defaultMetaTitleAr: "Dev Nour — نور محمد",
   defaultMetaTitleEn: "Dev Nour — Nour Mohamed",
   defaultMetaDescAr:
@@ -9,7 +9,7 @@ const defaultSettings = {
   defaultMetaDescEn:
     "Portfolio of Nour Mohamed — web development, modern interfaces, and digital products.",
   ogImageUrl: null as string | null,
-  accentColor: "#c8925a",
+  accentColor: "#ff2d55",
   googleVerificationMeta: null as string | null,
   googleVerificationFile: null as string | null,
   googleVerificationHtml: null as string | null,
@@ -24,7 +24,12 @@ async function safe<T>(fn: () => Promise<T>, fallback: T): Promise<T> {
 }
 
 export async function getProfile() {
-  return safe(() => prisma.profile.findFirst(), null);
+  const profile = await safe(() => prisma.profile.findFirst(), null);
+  if (!profile) return null;
+  return {
+    ...profile,
+    yearsExperience: profile.yearsExperience ?? 5,
+  };
 }
 
 export async function getSettings() {

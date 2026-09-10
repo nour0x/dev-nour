@@ -181,6 +181,7 @@ export function buildPageMetadata({
       title,
       description,
       images: ogImage ? [ogImage] : undefined,
+      creator: "@nour0x",
     },
     robots: { index: true, follow: true },
   };

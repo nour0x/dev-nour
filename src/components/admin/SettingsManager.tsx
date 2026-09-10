@@ -23,7 +23,7 @@ export function SettingsManager() {
     yearsExperience: "5",
   });
   const [settings, setSettings] = useState({
-    siteUrl: "http://localhost:3000",
+    siteUrl: "https://dev.mudiridigi.com",
     defaultMetaTitleAr: "",
     defaultMetaTitleEn: "",
     defaultMetaDescAr: "",

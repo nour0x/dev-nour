@@ -10,7 +10,10 @@
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
     "db:expand": "tsx prisma/seed-expand.ts",
+    "db:seed-skills": "tsx prisma/seed-skills.ts",
     "db:setup": "prisma db push && tsx prisma/seed.ts && tsx prisma/seed-expand.ts",
+    "db:backup": "node scripts/backup.mjs",
+    "postdeploy:check": "node scripts/post-deploy-check.mjs",
     "postinstall": "prisma generate"
   },
   "dependencies": {

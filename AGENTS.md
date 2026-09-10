@@ -7,3 +7,13 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+# Dev Nour — agent / AEO rules
+
+- Keep Mudiri Digi locked: `MUDIRI` in `src/lib/seo.ts` must stay in footer, JSON-LD `sameAs`, and sitemap.
+- Preserve `/sitemap.xml`, `/robots.txt`, `/llms.txt`, `/llms-full.txt`, `/icon`, `/manifest.webmanifest`.
+- Public page metadata must go through `buildPageMetadata` (title, description, keywords, OG, Twitter, hreflang).
+- Do not invent `Profile.age`. Prefer admin-entered values; `yearsExperience` defaults to 5.
+- Prefer `npm run db:seed-skills` (upsert) over `db:expand` on production — expand deletes content.
+- Production paths: absolute `DATABASE_URL` + `UPLOAD_DIR` outside `hbuilds/current`.
+- Full plan of record: `خطة-التطوير-الشاملة.md`.

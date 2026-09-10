@@ -3,10 +3,11 @@ import { notFound } from "next/navigation";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { prisma } from "@/lib/db";
 import { parseTags } from "@/lib/utils";
-import { siteUrl } from "@/lib/seo";
+import { buildPageMetadata, siteUrl } from "@/lib/seo";
 import type { Locale } from "@/i18n/config";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { Reveal } from "@/components/public/Reveal";
+import { ConsultCTA } from "@/components/public/ConsultCTA";
 import { Link } from "@/i18n/navigation";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
@@ -30,32 +31,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale === "ar"
       ? project.metaDescriptionAr || project.summaryAr
       : project.metaDescriptionEn || project.summaryEn;
+  const keywords = (
+    locale === "ar" ? project.keywordsAr : project.keywordsEn
+  )
+    ?.split(",")
+    .map((k) => k.trim())
+    .filter(Boolean);
 
-  return {
+  return buildPageMetadata({
+    locale,
+    path: `/${locale}/projects/${slug}`,
     title,
     description,
-    keywords:
-      locale === "ar"
-        ? project.keywordsAr || undefined
-        : project.keywordsEn || undefined,
-    alternates: {
-      canonical: siteUrl(`/${locale}/projects/${slug}`),
-      languages: {
-        ar: siteUrl(`/ar/projects/${slug}`),
-        en: siteUrl(`/en/projects/${slug}`),
-        "x-default": siteUrl(`/en/projects/${slug}`),
-      },
-    },
-    openGraph: {
-      title:
-        locale === "ar"
-          ? project.ogTitleAr || title
-          : project.ogTitleEn || title,
-      description,
-      type: "article",
-      images: project.coverUrl ? [project.coverUrl] : undefined,
-    },
-  };
+    keywords,
+    image: project.coverUrl,
+    type: "article",
+  });
 }
 
 export default async function ProjectDetailPage({ params }: Props) {
@@ -115,6 +106,9 @@ export default async function ProjectDetailPage({ params }: Props) {
               {s("source")}
             </a>
           ) : null}
+          <Link href="/contact" className="btn btn-primary focus-ring" data-track="project-consult">
+            {s("consult")}
+          </Link>
           <Link href="/projects" className="btn btn-ghost focus-ring">
             ← {s("viewAll")}
           </Link>
@@ -126,6 +120,8 @@ export default async function ProjectDetailPage({ params }: Props) {
       <Reveal className="max-w-3xl whitespace-pre-wrap text-base leading-9 text-fg-muted">
         {body}
       </Reveal>
+
+      <ConsultCTA />
 
       <JsonLd
         data={{

@@ -4,6 +4,7 @@ import { getPublishedSkills } from "@/lib/content";
 import { buildPageMetadata } from "@/lib/seo";
 import type { Locale } from "@/i18n/config";
 import { Reveal } from "@/components/public/Reveal";
+import { ConsultCTA } from "@/components/public/ConsultCTA";
 
 export async function generateMetadata({
   params,
@@ -48,7 +49,21 @@ export default async function SkillsPage({
     return acc;
   }, {});
 
-  const orderHint = ["لغات", "Language", "أطر", "Framework", "منص", "Platform", "إعلان", "Ads", "Growth"];
+  const orderHint = [
+    "لغات",
+    "Language",
+    "أطر",
+    "Framework",
+    "منص",
+    "Platform",
+    "إعلان",
+    "Ads",
+    "Growth",
+    "فهرس",
+    "Index",
+    "ذكاء",
+    "AI",
+  ];
 
   const ordered = Object.entries(groups).sort(([a], [b]) => {
     const ai = orderHint.findIndex((h) => a.includes(h));
@@ -95,6 +110,8 @@ export default async function SkillsPage({
           </Reveal>
         ))}
       </div>
+
+      <ConsultCTA />
     </div>
   );
 }

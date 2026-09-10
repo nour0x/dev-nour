@@ -3,10 +3,11 @@ import { notFound } from "next/navigation";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { prisma } from "@/lib/db";
 import { formatPrice } from "@/lib/utils";
-import { siteUrl } from "@/lib/seo";
+import { buildPageMetadata, siteUrl } from "@/lib/seo";
 import type { Locale } from "@/i18n/config";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { Reveal } from "@/components/public/Reveal";
+import { ConsultCTA } from "@/components/public/ConsultCTA";
 import { Link } from "@/i18n/navigation";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
@@ -30,31 +31,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale === "ar"
       ? service.metaDescriptionAr || service.summaryAr
       : service.metaDescriptionEn || service.summaryEn;
+  const keywords = (
+    locale === "ar" ? service.keywordsAr : service.keywordsEn
+  )
+    ?.split(",")
+    .map((k) => k.trim())
+    .filter(Boolean);
 
-  return {
+  return buildPageMetadata({
+    locale,
+    path: `/${locale}/services/${slug}`,
     title,
     description,
-    keywords:
-      locale === "ar"
-        ? service.keywordsAr || undefined
-        : service.keywordsEn || undefined,
-    alternates: {
-      canonical: siteUrl(`/${locale}/services/${slug}`),
-      languages: {
-        ar: siteUrl(`/ar/services/${slug}`),
-        en: siteUrl(`/en/services/${slug}`),
-        "x-default": siteUrl(`/en/services/${slug}`),
-      },
-    },
-    openGraph: {
-      title:
-        locale === "ar"
-          ? service.ogTitleAr || title
-          : service.ogTitleEn || title,
-      description,
-      type: "website",
-    },
-  };
+    keywords,
+  });
 }
 
 export default async function ServiceDetailPage({ params }: Props) {
@@ -112,6 +102,12 @@ export default async function ServiceDetailPage({ params }: Props) {
       <Reveal className="mt-12 max-w-3xl whitespace-pre-wrap text-base leading-8 text-fg-muted">
         {body}
       </Reveal>
+      <div className="mt-10">
+        <Link href="/contact" className="btn btn-primary focus-ring" data-track="service-consult">
+          {s("consult")}
+        </Link>
+      </div>
+      <ConsultCTA />
       <JsonLd
         data={{
           "@context": "https://schema.org",
