@@ -49,22 +49,26 @@ Default admin (from `.env`):
 
 1. Create a Node.js app / website that supports Next.js.
 2. Connect Git: `https://github.com/nour0x/dev-nour` branch `main`.
-3. Set environment variables from `.env.example` (use a strong `JWT_SECRET` and your live domain in `NEXT_PUBLIC_SITE_URL`).
-4. Build command (already includes DB create):
+3. Set env vars (strong `JWT_SECRET`, live `NEXT_PUBLIC_SITE_URL`).
+4. **SQLite path must be absolute and outside `hbuilds/current`** (relative `file:./prod.db` breaks across build/runtime and gets wiped on redeploy):
 
 ```bash
-npm ci && npm run build
+mkdir -p ~/domains/dev.mudiridigi.com/data
+# In hPanel env / hbuilds/config/.env:
+# DATABASE_URL="file:/home/u194449289/domains/dev.mudiridigi.com/data/prod.db"
 ```
 
-5. After first successful build, seed content once:
+5. Build: `npm ci && npm run build`
+6. First deploy only — create tables + seed (from app dir `hbuilds/current/nodejs`):
 
 ```bash
+npx prisma db push
 npx tsx prisma/seed.ts
 npx tsx prisma/seed-expand.ts
 ```
 
-6. Start command: `npm start`
-7. Persist `prisma/*.db` and `public/uploads` between deploys.
+7. Start: `npm start`
+8. Also persist `public/uploads` (or symlink uploads to `~/domains/.../data/uploads`).
 
 ## Scripts
 
