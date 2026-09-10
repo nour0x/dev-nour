@@ -1,0 +1,68 @@
+{
+  "brand": "Dev Nour",
+  "nav": {
+    "home": "Home",
+    "projects": "Work",
+    "services": "Services",
+    "experience": "Experience",
+    "skills": "Skills",
+    "about": "About",
+    "contact": "Contact",
+    "links": "Links"
+  },
+  "hero": {
+    "ctaPrimary": "Book a free consult",
+    "ctaSecondary": "See my work",
+    "scroll": "Scroll",
+    "kicker": "Founder of Mudiri Digi · Digital products"
+  },
+  "sections": {
+    "featured": "Selected work",
+    "services": "Services I can deliver",
+    "skills": "Skills & tech",
+    "languages": "Programming languages",
+    "frameworks": "Frameworks & stack",
+    "platforms": "Store platforms & customization",
+    "ads": "Ads & growth",
+    "experience": "Clear, distinctive experience",
+    "contact": "Tell me what you need — we'll shape it together",
+    "consult": "Free consultation",
+    "consultHint": "A short session to define scope and a fair budget — no commitment.",
+    "viewAll": "View all",
+    "caseStudy": "Case study",
+    "avgPrice": "Typical range",
+    "from": "From",
+    "to": "Up to",
+    "live": "Live site",
+    "source": "Docs",
+    "send": "Send message",
+    "name": "Your name",
+    "email": "Your email",
+    "subject": "Subject",
+    "message": "What do you need?",
+    "success": "Got it. I'll reply soon.",
+    "error": "Something went wrong. Try again.",
+    "empty": "Nothing here yet.",
+    "level": "Level",
+    "present": "Present",
+    "founderOf": "Founder of",
+    "company": "My company",
+    "and": "and",
+    "stack": "Stack",
+    "metrics": "Project metrics",
+    "photoAlt": "Portrait of Nour Mohamed",
+    "workWithMe": "Work with me",
+    "platformsTitle": "Presence & platforms",
+    "mySites": "My sites & platforms"
+  },
+  "footer": {
+    "rights": "All rights reserved",
+    "mudiri": "Mudiri Digi",
+    "shop": "Mudiri Shop",
+    "line": "Founder of Mudiri Digi — my company for digital products"
+  },
+  "meta": {
+    "homeTitle": "Dev Nour — Nour Mohamed | Founder of Mudiri Digi",
+    "homeDesc": "Nour Mohamed, founder of Mudiri Digi: apps, stores, admin systems, CRM, ERP, and Easy Orders / Shopify / WordPress customization."
+  }
+}

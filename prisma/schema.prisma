@@ -1,0 +1,235 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String   @default("Admin")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Profile {
+  id          String  @id @default(cuid())
+  brandName   String  @default("Dev Nour")
+  nameAr      String  @default("نور محمد")
+  nameEn      String  @default("Nour Mohamed")
+  titleAr     String  @default("مطور ويب وتصميم رقمي")
+  titleEn     String  @default("Web Developer & Digital Designer")
+  bioAr       String  @default("")
+  bioEn       String  @default("")
+  avatarUrl   String?
+  locationAr  String?
+  locationEn  String?
+  email       String?
+  phone       String?
+  githubUrl   String?
+  resumeUrl   String?
+}
+
+model Project {
+  id               String   @id @default(cuid())
+  slug             String   @unique
+  titleAr          String
+  titleEn          String
+  summaryAr        String   @default("")
+  summaryEn        String   @default("")
+  bodyAr           String   @default("")
+  bodyEn           String   @default("")
+  coverUrl         String?
+  tags             String   @default("[]")
+  githubUrl        String?
+  demoUrl          String?
+  featured         Boolean  @default(false)
+  published        Boolean  @default(true)
+  sortOrder        Int      @default(0)
+  metaTitleAr      String?
+  metaTitleEn      String?
+  metaDescriptionAr String?
+  metaDescriptionEn String?
+  ogTitleAr        String?
+  ogTitleEn        String?
+  keywordsAr       String?
+  keywordsEn       String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Service {
+  id                String   @id @default(cuid())
+  slug              String   @unique
+  titleAr           String
+  titleEn           String
+  summaryAr         String   @default("")
+  summaryEn         String   @default("")
+  bodyAr            String   @default("")
+  bodyEn            String   @default("")
+  icon              String?
+  priceMin          Float?
+  priceAvg          Float?
+  priceMax          Float?
+  currency          String   @default("USD")
+  published         Boolean  @default(true)
+  sortOrder         Int      @default(0)
+  metaTitleAr       String?
+  metaTitleEn       String?
+  metaDescriptionAr String?
+  metaDescriptionEn String?
+  ogTitleAr         String?
+  ogTitleEn         String?
+  keywordsAr        String?
+  keywordsEn        String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Experience {
+  id          String  @id @default(cuid())
+  companyAr   String
+  companyEn   String
+  roleAr      String
+  roleEn      String
+  descriptionAr String @default("")
+  descriptionEn String @default("")
+  locationAr  String?
+  locationEn  String?
+  startDate   String
+  endDate     String?
+  current     Boolean @default(false)
+  sortOrder   Int     @default(0)
+  published   Boolean @default(true)
+}
+
+model Skill {
+  id        String  @id @default(cuid())
+  nameAr    String
+  nameEn    String
+  categoryAr String @default("عام")
+  categoryEn String @default("General")
+  level     Int     @default(80)
+  icon      String?
+  sortOrder Int     @default(0)
+  published Boolean @default(true)
+}
+
+model SocialLink {
+  id        String  @id @default(cuid())
+  platform  String
+  labelAr   String
+  labelEn   String
+  url       String
+  icon      String?
+  sortOrder Int     @default(0)
+  published Boolean @default(true)
+}
+
+model SiteLink {
+  id        String  @id @default(cuid())
+  labelAr   String
+  labelEn   String
+  url       String
+  category  String  @default("general")
+  icon      String?
+  sortOrder Int     @default(0)
+  published Boolean @default(true)
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String?
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model SiteSetting {
+  id                       String  @id @default(cuid())
+  siteUrl                  String  @default("http://localhost:3000")
+  defaultMetaTitleAr       String  @default("Dev Nour — نور محمد")
+  defaultMetaTitleEn       String  @default("Dev Nour — Nour Mohamed")
+  defaultMetaDescAr        String  @default("بورتفوليو نور محمد — تطوير ويب، واجهات حديثة، ومنتجات رقمية.")
+  defaultMetaDescEn        String  @default("Portfolio of Nour Mohamed — web development, modern interfaces, and digital products.")
+  ogImageUrl               String?
+  accentColor              String  @default("#14b8a6")
+  googleVerificationMeta   String?
+  googleVerificationFile   String?
+  googleVerificationHtml   String?
+}
+
+model AnalyticsVisitor {
+  id         String   @id @default(cuid())
+  visitorKey String   @unique
+  firstSeen  DateTime @default(now())
+  lastSeen   DateTime @default(now())
+  userAgent  String?
+  language   String?
+  device     String?
+  country    String?
+  sessions   AnalyticsSession[]
+  events     AnalyticsEvent[]
+  pageViews  AnalyticsPageView[]
+}
+
+model AnalyticsSession {
+  id          String   @id @default(cuid())
+  sessionKey  String   @unique
+  visitorId   String
+  visitor     AnalyticsVisitor @relation(fields: [visitorId], references: [id], onDelete: Cascade)
+  startedAt   DateTime @default(now())
+  lastActiveAt DateTime @default(now())
+  endedAt     DateTime?
+  landingPath String?
+  exitPath    String?
+  referrer    String?
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  pageCount   Int      @default(0)
+  eventCount  Int      @default(0)
+  durationMs  Int      @default(0)
+  events      AnalyticsEvent[]
+  pageViews   AnalyticsPageView[]
+}
+
+model AnalyticsPageView {
+  id          String   @id @default(cuid())
+  viewKey     String   @unique
+  sessionId   String
+  session     AnalyticsSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  visitorId   String
+  visitor     AnalyticsVisitor @relation(fields: [visitorId], references: [id], onDelete: Cascade)
+  path        String
+  title       String?
+  enteredAt   DateTime @default(now())
+  leftAt      DateTime?
+  durationMs  Int      @default(0)
+  activeMs    Int      @default(0)
+  scrollMax   Int      @default(0)
+  fromPath    String?
+}
+
+model AnalyticsEvent {
+  id            String   @id @default(cuid())
+  clientEventId String   @unique
+  sessionId     String
+  session       AnalyticsSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  visitorId     String
+  visitor       AnalyticsVisitor @relation(fields: [visitorId], references: [id], onDelete: Cascade)
+  type          String
+  path          String?
+  fromPath      String?
+  toPath        String?
+  label         String?
+  target        String?
+  meta          String   @default("{}")
+  createdAt     DateTime @default(now())
+}

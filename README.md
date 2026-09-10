@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Dev Nour Portfolio
 
-## Getting Started
+Bilingual (AR/EN) personal portfolio for **Nour Mohamed / Dev Nour** with a full admin panel, auto SEO, and Hostinger-ready Next.js deployment.
 
-First, run the development server:
+## Stack
+
+- Next.js (App Router)
+- Prisma + SQLite
+- next-intl (auto locale detection)
+- JWT admin auth (httpOnly cookie)
+- Framer Motion + Tailwind CSS
+
+## Quick start
 
 ```bash
+npm install
+cp .env.example .env
+npm run db:setup
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Site: http://localhost:3000 (auto-redirects to `/ar` or `/en`)
+- Admin: http://localhost:3000/admin/login
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Default admin (from `.env`):
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Email: `admin@devnour.com`
+- Password: `Admin@123456` (change in production)
 
-## Learn More
+## Admin features
 
-To learn more about Next.js, take a look at the following resources:
+- Projects, services/activities, experience, skills
+- Social + link hub
+- Contact inbox
+- Profile + SEO defaults
+- Media upload (`/public/uploads`)
+- Auto SEO fields (slug, titles, descriptions, keywords) on save
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## SEO / AI
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `/sitemap.xml`
+- `/robots.txt` (allows major AI crawlers)
+- `/llms.txt` and `/llms-full.txt`
+- JSON-LD Person / WebSite / Organization
+- hreflang for `ar` / `en` / `x-default`
+- Locked Mudiri Digi credit in footer + schema `sameAs` + sitemap
 
-## Deploy on Vercel
+## Hostinger deploy
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Create a Node.js app / website that supports Next.js.
+2. Upload the project (or connect Git).
+3. Set environment variables from `.env.example`.
+4. Build & start:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm ci
+npx prisma db push
+npx tsx prisma/seed.ts
+npm run build
+npm start
+```
+
+5. Persist `prisma/dev.db` and `public/uploads` between deploys (or migrate DB file to a durable path and update `DATABASE_URL`).
+6. Set `NEXT_PUBLIC_SITE_URL` to your live domain (`https://...`).
+7. Change `JWT_SECRET` and `ADMIN_PASSWORD` before going live.
+
+## Scripts
+
+| Script | Purpose |
+| --- | --- |
+| `npm run dev` | Local development |
+| `npm run build` | Production build |
+| `npm start` | Start production server |
+| `npm run db:setup` | Push schema + seed |
+| `npm run db:seed` | Re-seed admin/content |
+
+## Security notes
+
+- Admin routes protected by middleware + JWT cookie
+- Zod validation on APIs
+- Rate limits on login, contact, uploads
+- Security headers on responses
+- Upload MIME/size whitelist
