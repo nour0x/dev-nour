@@ -160,11 +160,12 @@ export function buildPageMetadata({
     description,
     keywords: [...keywords, ...baseKeywords],
     alternates: {
-      canonical: url,
+      // Relative paths so metadataBase resolves consistently (fixes Lighthouse canonical/hreflang conflict)
+      canonical: normalized,
       languages: {
-        ar: siteUrl(`/ar${bare === "/" ? "" : bare}`),
-        en: siteUrl(`/en${bare === "/" ? "" : bare}`),
-        "x-default": siteUrl(`/en${bare === "/" ? "" : bare}`),
+        ar: `/ar${bare === "/" ? "" : bare}`,
+        en: `/en${bare === "/" ? "" : bare}`,
+        "x-default": `/en${bare === "/" ? "" : bare}`,
       },
     },
     openGraph: {

@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { useRef, useState } from "react";
 import { Upload, X } from "lucide-react";
+import { normalizeMediaUrl } from "@/lib/media";
 
 export function ImageUploader({
   value,
@@ -18,6 +18,7 @@ export function ImageUploader({
   const inputRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const preview = normalizeMediaUrl(value);
 
   async function onFile(file: File | null) {
     if (!file) return;
@@ -40,10 +41,11 @@ export function ImageUploader({
   return (
     <div className="space-y-3">
       <p className="admin-label">{label}</p>
-      {value ? (
+      {preview ? (
         <div className="relative w-full max-w-xs overflow-hidden border border-border bg-bg-soft">
           <div className="relative aspect-square w-full">
-            <Image src={value} alt="Uploaded" fill className="object-cover" unoptimized />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={preview} alt="Uploaded" className="h-full w-full object-cover" />
           </div>
           <button
             type="button"

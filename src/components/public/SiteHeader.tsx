@@ -39,9 +39,9 @@ export function SiteHeader() {
   const otherLocale = locale === "ar" ? "en" : "ar";
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/70 bg-bg/80 backdrop-blur-xl">
+    <header className="site-header sticky top-0 z-50">
       <div className="container-page flex h-[4.25rem] items-center justify-between gap-3">
-        <Link href="/" className="display focus-ring text-[1.35rem] font-bold tracking-tight" data-track="nav-brand">
+        <Link href="/" className="display focus-ring text-[1.35rem] font-bold tracking-tight text-accent" data-track="nav-brand">
           {brand("brand")}
         </Link>
 

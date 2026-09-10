@@ -1,14 +1,5 @@
-import Image from "next/image";
 import { cn } from "@/lib/utils";
-
-function isLocalMedia(src?: string | null) {
-  if (!src) return false;
-  return (
-    src.startsWith("/uploads/") ||
-    src.startsWith("/api/media/") ||
-    src.startsWith("uploads/")
-  );
-}
+import { normalizeMediaUrl } from "@/lib/media";
 
 export function ProfilePhoto({
   src,
@@ -24,7 +15,7 @@ export function ProfilePhoto({
   size?: "sm" | "md" | "lg" | "xl";
 }) {
   const dim =
-    size === "sm" ? 64 : size === "md" ? 112 : size === "xl" ? 280 : 220;
+    size === "sm" ? 72 : size === "md" ? 120 : size === "xl" ? 300 : 240;
   const initials = name
     .split(/\s+/)
     .filter(Boolean)
@@ -32,30 +23,28 @@ export function ProfilePhoto({
     .map((p) => p[0]?.toUpperCase())
     .join("");
 
-  const local = isLocalMedia(src);
+  const media = normalizeMediaUrl(src);
 
   return (
     <div
-      className={cn(
-        "profile-photo relative overflow-hidden border border-border bg-bg-soft",
-        className
-      )}
+      className={cn("profile-photo relative overflow-hidden bg-bg-soft", className)}
       style={{ width: dim, height: dim }}
     >
-      {src ? (
-        <Image
-          src={src}
+      {media ? (
+        // Plain img avoids Next image optimizer 404s on Hostinger uploads
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={media}
           alt={alt}
           width={dim}
           height={dim}
-          sizes={`${dim}px`}
           className="h-full w-full object-cover"
-          priority={size === "lg" || size === "xl"}
-          unoptimized={local}
+          decoding="async"
+          fetchPriority={size === "lg" || size === "xl" ? "high" : "auto"}
         />
       ) : (
         <div
-          className="flex h-full w-full items-center justify-center bg-[linear-gradient(145deg,#1c1c1f,#0a0a0b_55%,#2a1218)]"
+          className="flex h-full w-full items-center justify-center bg-[linear-gradient(145deg,#2a1218,#0a0a0b_55%,#1a1408)]"
           aria-hidden
         >
           <span className="display text-[clamp(1.5rem,30%,4rem)] font-bold text-accent">
@@ -63,7 +52,7 @@ export function ProfilePhoto({
           </span>
         </div>
       )}
-      <span className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/10" />
+      <span className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/15" />
     </div>
   );
 }

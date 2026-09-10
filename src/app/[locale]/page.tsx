@@ -90,10 +90,13 @@ export default async function HomePage({
 
   return (
     <>
-      <section className="container-page flex min-h-[calc(100vh-4.25rem)] flex-col justify-center py-12 sm:py-16">
+      <section className="container-page hero-stage flex min-h-[calc(100vh-4.25rem)] flex-col justify-center">
         <p className="eyebrow">{t("kicker")}</p>
-        <h1 className="display mt-4 text-[clamp(2.8rem,9vw,6.2rem)] font-extrabold">
-          {profile?.brandName || "Dev Nour"}
+        <h1 className="display mt-4 text-[clamp(2.8rem,9vw,6.2rem)] font-extrabold text-fg">
+          <span className="text-accent">{(profile?.brandName || "Dev Nour").split(" ")[0]}</span>
+          {(profile?.brandName || "Dev Nour").includes(" ")
+            ? ` ${(profile?.brandName || "Dev Nour").split(" ").slice(1).join(" ")}`
+            : ""}
         </h1>
 
         <div className="hero-intro mt-10">
@@ -105,8 +108,8 @@ export default async function HomePage({
             className="mx-auto sm:mx-0"
           />
           <div>
-            <p className="text-2xl font-semibold sm:text-3xl">{name}</p>
-            <p className="mt-2 text-lg text-accent sm:text-xl">{title}</p>
+            <p className="text-2xl font-semibold sm:text-4xl">{name}</p>
+            <p className="mt-2 text-lg font-medium text-ink sm:text-xl">{title}</p>
             <div className="hero-stats mt-5" aria-label={t("statsLabel")}>
               {age ? (
                 <div className="hero-stat">
