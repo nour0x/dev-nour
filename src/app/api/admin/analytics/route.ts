@@ -37,8 +37,8 @@ export async function GET(request: Request) {
     prisma.analyticsEvent.groupBy({
       by: ["label", "target"],
       where: { createdAt: { gte: since }, type: "click" },
-      _count: { _all: true },
-      orderBy: { _count: { _all: "desc" } },
+      _count: { id: true },
+      orderBy: { _count: { id: "desc" } },
       take: 15,
     }),
     prisma.analyticsSession.findMany({
@@ -106,7 +106,7 @@ export async function GET(request: Request) {
     topClicks: topClicks.map((c) => ({
       label: c.label || "(no label)",
       target: c.target || "",
-      count: c._count._all,
+      count: c._count.id,
     })),
     journeys: journeys.map((j) => ({
       from: j.fromPath,
